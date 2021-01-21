@@ -35,6 +35,7 @@ router.post('/api/workouts', (req, res) => {
   });
 });
 
+// This route totals up the duration of exercises for the 7 most recent workouts.
 router.get('/api/workouts/range', (req, res) => {
   db.Workout.aggregate([
     { $sort: { day: -1} },
