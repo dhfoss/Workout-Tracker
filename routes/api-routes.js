@@ -21,8 +21,14 @@ router.get('/api/workouts', (req, res) => {
 
 // This route updates one workout by adding an exercise
 router.put('/api/workouts/:id', (req, res) => {
-  const thisId = req.params.id;
-  db.Workout.findByIdAndUpdate(thisId, {$push: {exercises: req.body}})
+  db.Workout.findByIdAndUpdate(req.params.id, {$push: {exercises: req.body}})
+  .then(data => {
+    res.json(data);
+  });
+});
+
+router.post('/api/workouts', (req, res) => {
+  db.Workout.create({})
   .then(data => {
     res.json(data);
   });
