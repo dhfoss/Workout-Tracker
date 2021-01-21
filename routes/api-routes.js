@@ -27,8 +27,24 @@ router.put('/api/workouts/:id', (req, res) => {
   });
 });
 
+// This route creates a new empty workout
 router.post('/api/workouts', (req, res) => {
   db.Workout.create({})
+  .then(data => {
+    res.json(data);
+  });
+});
+
+router.get('/api/workouts/range', (req, res) => {
+  db.Workout.aggregate([
+    { $sort: { day: -1} },
+    { $limit: 7},
+    {
+      $addFields: {
+        totalDuration: {$sum: "$exercises.duration"}
+      }
+    }
+  ])
   .then(data => {
     res.json(data);
   });
