@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useCreateIndex: true
 });
 
-// This route finds all workouts, sorted from oldest to newest.
+// This route finds all workouts, sorted from oldest to newest, and calculates the total duration of the workouts.
 router.get('/api/workouts', (req, res) => {
   db.Workout.aggregate([
     {
