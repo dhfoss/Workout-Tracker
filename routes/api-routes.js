@@ -3,13 +3,6 @@ const mongoose = require("mongoose");
 const db = require("../models");
 const router = require("./html-routes");
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-  useCreateIndex: true
-});
-
 // This route finds all workouts, sorted from oldest to newest, and calculates the total duration of the workouts.
 router.get('/api/workouts', (req, res) => {
   db.Workout.aggregate([
