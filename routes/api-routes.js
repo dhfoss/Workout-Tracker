@@ -12,10 +12,18 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 
 // This route finds all workouts, sorted from oldest to newest.
 router.get('/api/workouts', (req, res) => {
-  db.Workout.find({})
-  // db.Workout.find().sort({day: -1}).limit(1)
+  db.Workout.aggregate([
+    {
+      $addFields: {
+        totalDuration: {$sum: "$exercises.duration"}
+      }
+    }
+  ])
   .then(data => {
-      res.json(data);
+    res.json(data);
+  })
+  .catch(err => {
+    res.json(err);
   });
 });
 
@@ -24,6 +32,9 @@ router.put('/api/workouts/:id', (req, res) => {
   db.Workout.findByIdAndUpdate(req.params.id, {$push: {exercises: req.body}})
   .then(data => {
     res.json(data);
+  })
+  .catch(err => {
+    res.json(err);
   });
 });
 
@@ -32,6 +43,9 @@ router.post('/api/workouts', (req, res) => {
   db.Workout.create({})
   .then(data => {
     res.json(data);
+  })
+  .catch(err => {
+    res.json(err);
   });
 });
 
@@ -48,6 +62,9 @@ router.get('/api/workouts/range', (req, res) => {
   ])
   .then(data => {
     res.json(data);
+  })
+  .catch(err => {
+    res.json(err);
   });
 });
 
